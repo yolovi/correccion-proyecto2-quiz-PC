@@ -139,3 +139,55 @@ startButton.addEventListener('click', () => {
     getQuestions();
     startButton.classList.add('d-none'); // Añade la clase 'd-none' de Bootstrap para ocultar el botón
 });
+
+
+const siguientePregunta = () => {
+    indicePreguntaActual++;
+    console.log("Índice de pregunta actual:", indicePreguntaActual);
+    mostrarPregunta(indicePreguntaActual);
+    resetearEstilosBotones();
+if (indicePreguntaActual > 0) {
+        botonAnterior.disabled = false;
+        botonAnterior.classList.remove('d-none');
+    }
+
+    // Deshabilitar "Siguiente" si estamos en la última pregunta
+    if (indicePreguntaActual === preguntasArray.length - 1) {
+        botonSiguiente.disabled = true;
+    }
+};
+
+const resetearEstilosBotones = () => {
+    respuesta1Btn.classList.remove('btn-success', 'btn-danger');
+    respuesta2Btn.classList.remove('btn-success', 'btn-danger');
+    respuesta3Btn.classList.remove('btn-success', 'btn-danger');
+    respuesta4Btn.classList.remove('btn-success', 'btn-danger');
+};
+const anteriorPregunta = () => {
+    indicePreguntaActual--;
+    console.log("Índice de pregunta actual:", indicePreguntaActual);
+    mostrarPregunta(indicePreguntaActual);
+    resetearEstilosBotones();
+
+    // Deshabilitar "Anterior" si estamos en la primera pregunta
+    if (indicePreguntaActual === 0) {
+        botonAnterior.disabled = true;
+    }
+
+    // Habilitar "Siguiente" si no estamos en la última pregunta
+    if (indicePreguntaActual < preguntasArray.length - 1) {
+        botonSiguiente.disabled = false;
+    }
+};
+
+// Event listener para el botón "Siguiente"
+botonSiguiente.addEventListener('click', siguientePregunta);
+
+// Event listener para el botón "Anterior" (asegúrate de tenerlo)
+
+botonAnterior.addEventListener('click', anteriorPregunta);
+
+
+
+
+    
