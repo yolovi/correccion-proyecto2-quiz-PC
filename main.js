@@ -32,36 +32,12 @@ const mostrarHome = () => {
 botonGo.addEventListener("click", mostrarJuego);
 botonHome.addEventListener("click", mostrarHome);
 
-//async function getQuestions() {
-    //try {
-       // const response = await fetch(API_URL);
-        //if (!response.ok) {
-          //  throw new Error("Error en la respuesta de la API");
-       // }
-        //const data = await response.json();
-        //return data.results;
-   // }
+
    
 
 let preguntasArray = []; // Variable para almacenar el array de preguntas
 let indicePreguntaActual = 0;
 let estaCargandoPreguntas = false
-
-/*const getQuestions = async () => {
-    try {
-        const res = await axios.get(API_URL)
-        const preguntas = res.data.results
-       
-        console.log(preguntas)
-        
-    } catch (error) {
-        console.error("Error al obtener las preguntas:",error)
-    }
-}
-getQuestions()*/
-
-
-
 
 const getQuestions = async () => {
     if (estaCargandoPreguntas) {
@@ -89,6 +65,10 @@ const getQuestions = async () => {
 };
 
 const mostrarPregunta = (indice) => {
+      resetearEstadoBotones(); 
+       // Deshabilita los botones al cargar la pregunta
+    resetearEstilosBotones();
+     resetearBotonesActivos();
     if (indice >= 0 && indice < preguntasArray.length) {
         const preguntaActual = preguntasArray[indice];
         preguntaTitulo.textContent = preguntaActual.question;
@@ -106,6 +86,7 @@ const mostrarPregunta = (indice) => {
         respuesta2Btn.dataset.correcta = (respuesta2Btn.textContent === correcta);
         respuesta3Btn.dataset.correcta = (respuesta3Btn.textContent === correcta);
         respuesta4Btn.dataset.correcta = (respuesta4Btn.textContent === correcta);
+        
     } else {
         preguntaTitulo.textContent = "¡Quiz terminado!";
         respuesta1Btn.textContent = "";
@@ -121,17 +102,15 @@ const mostrarPregunta = (indice) => {
 
 indicePreguntaActual = 0;
     preguntaTitulo.textContent = "Preguntas";
-    respuesta1Btn.disabled = false;
+    //quito de prueba
+    /*respuesta1Btn.disabled = false;
     respuesta2Btn.disabled = false;
     respuesta3Btn.disabled = false;
-    respuesta4Btn.disabled = false;
+    respuesta4Btn.disabled = false;*/
 
 
 // Event listener para el botón START
-startButton.addEventListener('click', () => {
-    indicePreguntaActual = 0;
-    getQuestions();
-});
+
 
 // Event listener para el botón START
 startButton.addEventListener('click', () => {
@@ -143,9 +122,9 @@ startButton.addEventListener('click', () => {
 
 const siguientePregunta = () => {
     indicePreguntaActual++;
-    console.log("Índice de pregunta actual:", indicePreguntaActual);
+    //console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
-    resetearEstilosBotones();
+    // quito de prueba resetearEstilosBotones();
 if (indicePreguntaActual > 0) {
         botonAnterior.disabled = false;
         botonAnterior.classList.remove('d-none');
@@ -162,12 +141,16 @@ const resetearEstilosBotones = () => {
     respuesta2Btn.classList.remove('btn-success', 'btn-danger');
     respuesta3Btn.classList.remove('btn-success', 'btn-danger');
     respuesta4Btn.classList.remove('btn-success', 'btn-danger');
+    respuesta1Btn.style.boxShadow = 'none';
+    respuesta2Btn.style.boxShadow = 'none';
+    respuesta3Btn.style.boxShadow = 'none';
+    respuesta4Btn.style.boxShadow = 'none';
 };
 const anteriorPregunta = () => {
     indicePreguntaActual--;
     console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
-    resetearEstilosBotones();
+    // quito de prueba resetearEstilosBotones();
 
     // Deshabilitar "Anterior" si estamos en la primera pregunta
     if (indicePreguntaActual === 0) {
@@ -182,6 +165,10 @@ const anteriorPregunta = () => {
 
 // Event listener para el botón "Siguiente"
 botonSiguiente.addEventListener('click', siguientePregunta);
+//botonSiguiente.forEach(button => {
+    //button.disabled = true; // Habilita el botón "Siguiente" al inicio
+    
+//});  // Selecciona el botón "Siguiente"
 
 // Event listener para el botón "Anterior" (asegúrate de tenerlo)
 
@@ -190,4 +177,68 @@ botonAnterior.addEventListener('click', anteriorPregunta);
 
 
 
+
+respuesta1Btn.addEventListener('click', () => {
+    resetearEstilosBotones();
+    resetearBotonesActivos();
+    respuesta1Btn.classList.add('active');
+     
+    // Aquí podrías también agregar la lógica para verificar la respuesta
+});
+
+respuesta2Btn.addEventListener('click', () => {
+    resetearEstilosBotones();
+    resetearBotonesActivos();
+    respuesta2Btn.classList.add('active');
     
+    // Aquí podrías también agregar la lógica para verificar la respuesta
+});
+
+respuesta3Btn.addEventListener('click', () => {
+    resetearEstilosBotones();
+    resetearBotonesActivos();
+    respuesta3Btn.classList.add('active');
+    
+   
+    // Aquí podrías también agregar la lógica para verificar la respuesta
+});
+
+respuesta4Btn.addEventListener('click', () => {
+    resetearEstilosBotones();
+    resetearBotonesActivos();
+    respuesta4Btn.classList.add('active');
+     
+    // Aquí podrías también agregar la lógica para verificar la respuesta
+});
+
+const mostrarPreguntaBoteonesDesactivados = (indice) => {
+    resetearBotones(); // Esta línea remueve la clase 'active'
+    if (indice >= 0 && indice < preguntasArray.length) {
+        
+
+
+    
+
+
+
+
+
+    }
+   
+};
+
+
+const resetearEstadoBotones = () => {
+    resetearEstilosBotones(); // Remueve la clase 'active' y otros estilos visuales
+    respuesta1Btn.disabled = false; // Habilita el botón
+    respuesta2Btn.disabled = false; // Habilita el botón
+    respuesta3Btn.disabled = false; // Habilita el botón
+    respuesta4Btn.disabled = false; // Habilita el botón
+};
+
+const resetearBotonesActivos = () => {
+    respuesta1Btn.classList.remove('active');
+    respuesta2Btn.classList.remove('active');
+    respuesta3Btn.classList.remove('active');
+    respuesta4Btn.classList.remove('active');
+};
