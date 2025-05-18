@@ -16,7 +16,7 @@
     <h5 class="card-title">preparado para jugar?</h5>
     <p class="card-text">juego divertido de 10 preguntas</p>
     <div class="d-grid gap-2 col-6 mx-auto">
-  <button id="buttom-go" class="btn btn-primary" type="button">Go</button>
+  <button id="buttom-go" class="btn-btn-primary" type="button">Go</button>
   
 </div>
   </div>
@@ -27,7 +27,7 @@
 <section id="vista2" class="container m-3 d-none" >
 <div class="card border-dark mb-3" style="max-width: 200rem;">
   <div class="card-header"><div class="d-grid gap-1 col-2 mx-auto">
-  <button id="button-home" class="btn btn-danger" type="button">Home</button>
+  <button id="button-home" class="btn-btn-danger" type="button">Home</button>
   
 </div></div>
 
@@ -37,23 +37,25 @@
 
   <div class="card-body bg-secondary">
     <h5 class="card-title text-center">JUEGO QUIZ</h5>
-    <h5 class="card-text text-center">Preguntas</p>
+    <h5 id="preguntas" class="card-text text-center">Preguntas</p>
   </div>
   
-    <button type="button" class="btn btn-outline-warning btn-lg text-start">Respuesta 1</button>
-<button type="button" class="btn btn-outline-danger btn-lg text-start">Respuesta 2</button>
-<button type="button" class="btn btn-outline-info btn-lg text-start">Respuesta 3</button>
-<button type="button" class="btn btn-outline-success btn-lg text-start">Respuesta 4</button>
+    <button id="respuesta1" type="button" class="btn btn-outline-warning btn-lg text-start">Respuesta 1</button>
+<button id="respuesta2" type="button" class="btn btn-outline-danger btn-lg text-start">Respuesta 2</button>
+<button id="respuesta3" type="button" class="btn btn-outline-info btn-lg text-start">Respuesta 3</button>
+<button id="respuesta4" type="button" class="btn btn-outline-success btn-lg text-start">Respuesta 4</button>
 <div class="card-footer bg-transparent border-success"><div class="d-grid gap-2 d-md-flex justify-content-md-end">
-  <button class="btn btn-secondary me-md-2" type="button">Anterior</button>
-  <button class="btn btn-secondary" type="button">Siguiente</button>
+     <button id="buttom-start" class="btn-btn-primary mx-auto" type="button">START</button>
+  <button id= "btn-anterior" class="btn-btn-secondary-me-md-2 d-none" type="button">Anterior</button>
+  <button id= "btn-siguiente"class="btn-btn-secondary d-none" type="button">Siguiente</button>
+   
 </div> </div>
 
  
 </div>
 </section>
 
-
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src= "main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
