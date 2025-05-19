@@ -1,4 +1,5 @@
 // DOM
+ let respuestasUsuario = [];
 const API_URL = "https://opentdb.com/api.php?amount=10&category=27&type=multiple";
 const botonGo = document.getElementById("buttom-go");
 const botonHome = document.getElementById("button-home");
@@ -13,24 +14,46 @@ const startButton = document.getElementById("buttom-start"); // ¡Nuevo botón S
 const botonAnterior = document.getElementById("btn-anterior"); // Selecciona el botón "Anterior"
 const botonSiguiente = document.getElementById("btn-siguiente"); // Selecciona el botón "Siguiente"
 const preguntaTitulo = document.getElementById("preguntas");
+const botonResultado = document.getElementById("btn-resultados"); 
+const vista3 = document.getElementById("vista3")
+const botonVolverInicio = document.getElementById("btn-volver-inicio");
+const totalAcertadas = document.getElementById("total-acertadas");
 
 const mostrarJuego = () => {
     vista1.classList.add("d-none")
     vista2.classList.remove("d-none")
+    vista3.classList.add("d-none") 
     botonGo.classList.add("btn-btn-primary")
     botonHome.classList.remove("btn-btn-danger")
+    
+     
    
     }
 const mostrarHome = () => {
     vista1.classList.remove("d-none")
     vista2.classList.add("d-none")
+    vista3.classList.add("d-none")
     botonGo.classList.remove("btn-btn-primary")
     botonHome.classList.add("btn-btn-danger")
+    botonResultado.clasSList.add("btn btn-success")
     
 }
 
+const mostrarResultados = () => {
+    vista1.classList.add("d-none")
+    vista2.classList.add("d-none")
+    vista3.classList.remove("d-none")
+     botonGo.classList.remove("btn-btn-primary")
+    botonHome.classList.remove("btn-btn-danger")
+    
+    }
+
+
 botonGo.addEventListener("click", mostrarJuego);
 botonHome.addEventListener("click", mostrarHome);
+botonResultado.addEventListener("click", mostrarResultados);
+botonVolverInicio.addEventListener("click",mostrarHome);
+
 
 
    
@@ -102,17 +125,7 @@ const mostrarPregunta = (indice) => {
 
 indicePreguntaActual = 0;
     preguntaTitulo.textContent = "Preguntas";
-    //quito de prueba
-    /*respuesta1Btn.disabled = false;
-    respuesta2Btn.disabled = false;
-    respuesta3Btn.disabled = false;
-    respuesta4Btn.disabled = false;*/
-
-
-// Event listener para el botón START
-
-
-// Event listener para el botón START
+ 
 startButton.addEventListener('click', () => {
     indicePreguntaActual = 0;
     getQuestions();
@@ -133,6 +146,7 @@ if (indicePreguntaActual > 0) {
     // Deshabilitar "Siguiente" si estamos en la última pregunta
     if (indicePreguntaActual === preguntasArray.length - 1) {
         botonSiguiente.disabled = true;
+        botonResultado.classList.remove('d-none'); // Muestra el botón "Resultados"
     }
 };
 
@@ -182,48 +196,51 @@ respuesta1Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta1Btn.classList.add('active');
-     
-    // Aquí podrías también agregar la lógica para verificar la respuesta
+
+ 
 });
 
 respuesta2Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta2Btn.classList.add('active');
+    });
+
+
+
+
     
-    // Aquí podrías también agregar la lógica para verificar la respuesta
-});
+   
+
 
 respuesta3Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta3Btn.classList.add('active');
+
+
+});
     
    
-    // Aquí podrías también agregar la lógica para verificar la respuesta
-});
+ 
+
 
 respuesta4Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta4Btn.classList.add('active');
+
+
+});
      
     // Aquí podrías también agregar la lógica para verificar la respuesta
-});
+
 
 const mostrarPreguntaBoteonesDesactivados = (indice) => {
     resetearBotones(); // Esta línea remueve la clase 'active'
     if (indice >= 0 && indice < preguntasArray.length) {
         
-
-
-    
-
-
-
-
-
-    }
+ }
    
 };
 
@@ -241,4 +258,15 @@ const resetearBotonesActivos = () => {
     respuesta2Btn.classList.remove('active');
     respuesta3Btn.classList.remove('active');
     respuesta4Btn.classList.remove('active');
+};
+
+
+
+    totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores
+
+  
+
+const guardarRespuestaSeleccionada = (respuesta) => {
+    respuestasUsuario[indicePreguntaActual] = respuesta;
+    console.log("Respuestas del usuario:", respuestasUsuario); // Para depuración
 };
