@@ -136,10 +136,11 @@ startButton.addEventListener('click', () => {
 
 
 const siguientePregunta = () => {
-    
+   
     indicePreguntaActual++;
     console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
+    resetearEstilosBotones();
     // quito de prueba resetearEstilosBotones();
 if (indicePreguntaActual > 0) {
         botonAnterior.disabled = false;
@@ -162,10 +163,11 @@ const resetearEstilosBotones = () => {
     respuesta2Btn.style.boxShadow = 'none';
     respuesta3Btn.style.boxShadow = 'none';
     respuesta4Btn.style.boxShadow = 'none';
-     respuesta1Btn.className = 'btn btn-outline-warning btn-lg text-start';
-    respuesta2Btn.className = 'btn btn-outline-warning btn-lg text-start';
-    respuesta3Btn.className = 'btn btn-outline-warning btn-lg text-start';
-    respuesta4Btn.className = 'btn btn-outline-warning btn-lg text-start';
+    respuesta1Btn.style.backgroundColor = ''; // <--- AGREGADO
+    respuesta2Btn.style.backgroundColor = ''; // <--- AGREGADO
+    respuesta3Btn.style.backgroundColor = ''; // <--- AGREGADO
+    respuesta4Btn.style.backgroundColor = '';
+
 };
 const anteriorPregunta = () => {
     indicePreguntaActual--;
@@ -212,19 +214,19 @@ resetearEstilosBotones();
     if(respuesta1Btn.dataset.correcta === "true") {
         respuestasCorrectasUsuario.push(respuesta1Btn.textContent);
         // pintar boton! verde
-        respuesta1Btn.style.backgroundColor = 'orange';
+        respuesta1Btn.style.backgroundColor = 'lightgreen';
         console.log("Respuesta correcta:", respuesta1Btn.textContent);
     }else{
 
         if(respuesta2Btn.textContent === correcta){
-            respuesta2Btn.style.backgroundColor = 'orange';
+            respuesta2Btn.style.backgroundColor = 'lightgreen';
             //pintar boton 2 verde
         }else if(respuesta3Btn.textContent === correcta){
             //pintar boton 3verde
-            respuesta3Btn.style.backgroundColor = 'orange';
+            respuesta3Btn.style.backgroundColor = 'lightgreen';
         }else if(respuesta4Btn.textContent === correcta){
             //pintar boton 4 verde
-            respuesta4Btn.style.backgroundColor = 'orange';
+            respuesta4Btn.style.backgroundColor = 'lightgreen';
         }
     }
  
@@ -247,14 +249,14 @@ respuesta2Btn.addEventListener('click', () => {
     }else{
 
         if(respuesta1Btn.textContent === correcta){
-            respuesta1Btn.style.backgroundColor = 'orange';
+            respuesta1Btn.style.backgroundColor = 'lightgreen';
             //pintar boton 2 verde
         }else if(respuesta3Btn.textContent === correcta){
             //pintar boton 3verde
-            respuesta3Btn.style.backgroundColor = 'orange';
+            respuesta3Btn.style.backgroundColor = 'lightgreen';
         }else if(respuesta4Btn.textContent === correcta){
             //pintar boton 4 verde
-            respuesta4Btn.style.backgroundColor = 'orange';
+            respuesta4Btn.style.backgroundColor = 'lightgreen';
         }
     }
     });
@@ -282,14 +284,14 @@ resetearEstilosBotones();
     }else{
 
         if(respuesta2Btn.textContent === correcta){
-            respuesta2Btn.style.backgroundColor = 'orange';
+            respuesta2Btn.style.backgroundColor = 'lightgreen';
             //pintar boton 2 verde
         }else if(respuesta1Btn.textContent === correcta){
             //pintar boton 3verde
-            respuesta1Btn.style.backgroundColor = 'orange';
+            respuesta1Btn.style.backgroundColor = 'lightgreen';
         }else if(respuesta4Btn.textContent === correcta){
             //pintar boton 4 verde
-            respuesta4Btn.style.backgroundColor = 'orange';
+            respuesta4Btn.style.backgroundColor = 'lightgreen';
         }
     }
 });
