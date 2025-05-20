@@ -1,5 +1,6 @@
 // DOM
  let respuestasUsuario = [];
+ let respuestasCorrectasUsuario = [];
 const API_URL = "https://opentdb.com/api.php?amount=10&category=27&type=multiple";
 const botonGo = document.getElementById("buttom-go");
 const botonHome = document.getElementById("button-home");
@@ -109,6 +110,7 @@ const mostrarPregunta = (indice) => {
         respuesta2Btn.dataset.correcta = (respuesta2Btn.textContent === correcta);
         respuesta3Btn.dataset.correcta = (respuesta3Btn.textContent === correcta);
         respuesta4Btn.dataset.correcta = (respuesta4Btn.textContent === correcta);
+   
         
     } else {
         preguntaTitulo.textContent = "¡Quiz terminado!";
@@ -134,8 +136,9 @@ startButton.addEventListener('click', () => {
 
 
 const siguientePregunta = () => {
+    
     indicePreguntaActual++;
-    //console.log("Índice de pregunta actual:", indicePreguntaActual);
+    console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
     // quito de prueba resetearEstilosBotones();
 if (indicePreguntaActual > 0) {
@@ -159,6 +162,10 @@ const resetearEstilosBotones = () => {
     respuesta2Btn.style.boxShadow = 'none';
     respuesta3Btn.style.boxShadow = 'none';
     respuesta4Btn.style.boxShadow = 'none';
+     respuesta1Btn.className = 'btn btn-outline-warning btn-lg text-start';
+    respuesta2Btn.className = 'btn btn-outline-warning btn-lg text-start';
+    respuesta3Btn.className = 'btn btn-outline-warning btn-lg text-start';
+    respuesta4Btn.className = 'btn btn-outline-warning btn-lg text-start';
 };
 const anteriorPregunta = () => {
     indicePreguntaActual--;
@@ -196,7 +203,30 @@ respuesta1Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta1Btn.classList.add('active');
+    const preguntaActual = preguntasArray[indicePreguntaActual];
+        
+        const correcta = preguntaActual.correct_answer;
 
+guardarRespuestaSeleccionada(respuesta1Btn.textContent);
+resetearEstilosBotones();
+    if(respuesta1Btn.dataset.correcta === "true") {
+        respuestasCorrectasUsuario.push(respuesta1Btn.textContent);
+        // pintar boton! verde
+        respuesta1Btn.style.backgroundColor = 'orange';
+        console.log("Respuesta correcta:", respuesta1Btn.textContent);
+    }else{
+
+        if(respuesta2Btn.textContent === correcta){
+            respuesta2Btn.style.backgroundColor = 'orange';
+            //pintar boton 2 verde
+        }else if(respuesta3Btn.textContent === correcta){
+            //pintar boton 3verde
+            respuesta3Btn.style.backgroundColor = 'orange';
+        }else if(respuesta4Btn.textContent === correcta){
+            //pintar boton 4 verde
+            respuesta4Btn.style.backgroundColor = 'orange';
+        }
+    }
  
 });
 
@@ -204,6 +234,29 @@ respuesta2Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta2Btn.classList.add('active');
+
+    const preguntaActual = preguntasArray[indicePreguntaActual];
+        
+        const correcta = preguntaActual.correct_answer;
+
+    guardarRespuestaSeleccionada(respuesta2Btn.textContent);
+    resetearEstilosBotones();
+        if(respuesta2Btn.dataset.correcta === "true") {
+        respuestasCorrectasUsuario.push(respuesta2Btn.textContent);
+        console.log("Respuesta correcta:", respuesta2Btn.textContent);
+    }else{
+
+        if(respuesta1Btn.textContent === correcta){
+            respuesta1Btn.style.backgroundColor = 'orange';
+            //pintar boton 2 verde
+        }else if(respuesta3Btn.textContent === correcta){
+            //pintar boton 3verde
+            respuesta3Btn.style.backgroundColor = 'orange';
+        }else if(respuesta4Btn.textContent === correcta){
+            //pintar boton 4 verde
+            respuesta4Btn.style.backgroundColor = 'orange';
+        }
+    }
     });
 
 
@@ -217,8 +270,28 @@ respuesta3Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta3Btn.classList.add('active');
+    const preguntaActual = preguntasArray[indicePreguntaActual];
+        
+        const correcta = preguntaActual.correct_answer;
 
+guardarRespuestaSeleccionada(respuesta3Btn.textContent);
+resetearEstilosBotones();
+    if(respuesta3Btn.dataset.correcta === "true") {
+        respuestasCorrectasUsuario.push(respuesta3Btn.textContent);
+        console.log("Respuesta correcta:", respuesta3Btn.textContent);
+    }else{
 
+        if(respuesta2Btn.textContent === correcta){
+            respuesta2Btn.style.backgroundColor = 'orange';
+            //pintar boton 2 verde
+        }else if(respuesta1Btn.textContent === correcta){
+            //pintar boton 3verde
+            respuesta1Btn.style.backgroundColor = 'orange';
+        }else if(respuesta4Btn.textContent === correcta){
+            //pintar boton 4 verde
+            respuesta4Btn.style.backgroundColor = 'orange';
+        }
+    }
 });
     
    
@@ -229,7 +302,28 @@ respuesta4Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta4Btn.classList.add('active');
+const preguntaActual = preguntasArray[indicePreguntaActual];
+        
+        const correcta = preguntaActual.correct_answer;
 
+    if(respuesta4Btn.dataset.correcta === "true") {
+        respuestasCorrectasUsuario.push(respuesta4Btn.textContent);
+        console.log("Respuesta correcta:", respuesta4Btn.textContent);
+    }else{
+
+        if(respuesta2Btn.textContent === correcta){
+            respuesta2Btn.style.backgroundColor = 'orange';
+            //pintar boton 2 verde
+        }else if(respuesta3Btn.textContent === correcta){
+            //pintar boton 3verde
+            respuesta3Btn.style.backgroundColor = 'orange';
+        }else if(respuesta1Btn.textContent === correcta){
+            //pintar boton 4 verde
+            respuesta1Btn.style.backgroundColor = 'orange';
+        }
+    }
+    resetearEstilosBotones();
+guardarRespuestaSeleccionada(respuesta4SBtn.textContent);
 
 });
      
