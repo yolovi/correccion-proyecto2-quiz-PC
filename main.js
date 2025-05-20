@@ -1,6 +1,7 @@
 // DOM
  let respuestasUsuario = [];
  let respuestasCorrectasUsuario = [];
+ 
 const API_URL = "https://opentdb.com/api.php?amount=10&category=27&type=multiple";
 const botonGo = document.getElementById("buttom-go");
 const botonHome = document.getElementById("button-home");
@@ -46,6 +47,8 @@ const mostrarResultados = () => {
     vista3.classList.remove("d-none")
      botonGo.classList.remove("btn-btn-primary")
     botonHome.classList.remove("btn-btn-danger")
+
+    totalAcertadas.textContent = `¡Acertaste ${respuestasCorrectasUsuario.length} de ${preguntasArray.length} preguntas!`;
     
     }
 
@@ -314,18 +317,18 @@ const preguntaActual = preguntasArray[indicePreguntaActual];
     }else{
 
         if(respuesta2Btn.textContent === correcta){
-            respuesta2Btn.style.backgroundColor = 'orange';
+            respuesta2Btn.style.backgroundColor = 'lightgreen';
             //pintar boton 2 verde
         }else if(respuesta3Btn.textContent === correcta){
             //pintar boton 3verde
-            respuesta3Btn.style.backgroundColor = 'orange';
+            respuesta3Btn.style.backgroundColor = 'lightgreen';
         }else if(respuesta1Btn.textContent === correcta){
             //pintar boton 4 verde
-            respuesta1Btn.style.backgroundColor = 'orange';
+            respuesta1Btn.style.backgroundColor = 'lightgreen';
         }
     }
-    resetearEstilosBotones();
-guardarRespuestaSeleccionada(respuesta4SBtn.textContent);
+    //resetearEstilosBotones();
+//guardarRespuestaSeleccionada(respuesta4SBtn.textContent);
 
 });
      
