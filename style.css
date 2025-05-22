@@ -2,9 +2,11 @@
     text-align: left; /* Alinea el texto dentro de este párrafo a la izquierda */
     /* Puedes añadir otras propiedades aquí si quieres: */
     /* font-weight: bold; */
-    /* color: #333; */
+    color: orangered !important;
+     
 }
 body {
-    background-color: #65b915 !important;; 
+    background-color: #65b915 !important;
+    background-image: url("C:\Users\PC\Desktop\proyecto QUIZ JS\animalitos.jpg");
    
 }
