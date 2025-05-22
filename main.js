@@ -1,6 +1,8 @@
 // DOM
  let respuestasUsuario = [];
  let respuestasCorrectasUsuario = [];
+ let preguntasArray = [];
+ 
  
 const API_URL = "https://opentdb.com/api.php?amount=10&category=27&type=multiple";
 const botonGo = document.getElementById("buttom-go");
@@ -20,6 +22,7 @@ const botonResultado = document.getElementById("btn-resultados");
 const vista3 = document.getElementById("vista3")
 const botonVolverInicio = document.getElementById("btn-volver-inicio");
 const totalAcertadas = document.getElementById("total-acertadas");
+const botonRestart = document.getElementById("btn-restart");
 
 const mostrarJuego = () => {
     vista1.classList.add("d-none")
@@ -28,20 +31,37 @@ const mostrarJuego = () => {
     botonGo.classList.add("btn-btn-primary")
     botonHome.classList.remove("btn-btn-danger")
     
-     
-   
-    }
+     indicePreguntaActual = 0
+    
+}
+    
+     const resetearJuego = () => {
+     vista1.classList.add("d-none")
+    vista2.classList.remove("d-none")
+    vista3.classList.add("d-none") 
+    botonGo.classList.add("btn-btn-primary")
+    botonHome.classList.remove("btn-btn-danger")
+    botonRestart.classList.remove("d-none")
+     indicePreguntaActual = 0
+     botonAnterior.classList.add('d-none');
+    botonSiguiente.classList.add('d-none');
+    botonResultado.classList.add('d-none');
+    //botonSiguiente.disabled = false;
+
+     }
+       
+
+
 const mostrarHome = () => {
     vista1.classList.remove("d-none")
     vista2.classList.add("d-none")
     vista3.classList.add("d-none")
     botonGo.classList.remove("btn-btn-primary")
     botonHome.classList.add("btn-btn-danger")
-    botonResultado.clasSList.add("btn btn-success")
+    botonResultado.classList.add("btn-btn-success")
     
-}
-
-const mostrarResultados = () => {
+  }
+    const mostrarResultados = () => {
     vista1.classList.add("d-none")
     vista2.classList.add("d-none")
     vista3.classList.remove("d-none")
@@ -54,16 +74,17 @@ const mostrarResultados = () => {
 
 
 botonGo.addEventListener("click", mostrarJuego);
+
 botonHome.addEventListener("click", mostrarHome);
 botonResultado.addEventListener("click", mostrarResultados);
-botonVolverInicio.addEventListener("click",mostrarHome);
+botonVolverInicio.addEventListener("click", resetearJuego);
 
 
 
    
 
-let preguntasArray = []; // Variable para almacenar el array de preguntas
-let indicePreguntaActual = 0;
+ // Variable para almacenar el array de preguntas
+
 let estaCargandoPreguntas = false
 
 const getQuestions = async () => {
@@ -133,8 +154,18 @@ indicePreguntaActual = 0;
  
 startButton.addEventListener('click', () => {
     indicePreguntaActual = 0;
+    preguntaTitulo.textContent = "Preguntas";
     getQuestions();
     startButton.classList.add('d-none'); // Añade la clase 'd-none' de Bootstrap para ocultar el botón
+    
+});
+botonRestart.addEventListener('click', () => {
+    indicePreguntaActual = 0;
+    preguntaTitulo.textContent = "Preguntas";
+    getQuestions();
+    botonRestart.classList.add('d-none'); // Añade la clase 'd-none' de Bootstrap para ocultar el botón
+    botonSiguiente.disabled = false;
+    botonSiguiente.classList.remove('d-none'); // Muestra el botón "Siguiente"
 });
 
 
@@ -144,7 +175,7 @@ const siguientePregunta = () => {
     console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
     resetearEstilosBotones();
-    // quito de prueba resetearEstilosBotones();
+ 
 if (indicePreguntaActual > 0) {
         botonAnterior.disabled = false;
         botonAnterior.classList.remove('d-none');
@@ -199,6 +230,10 @@ botonSiguiente.addEventListener('click', siguientePregunta);
 // Event listener para el botón "Anterior" (asegúrate de tenerlo)
 
 botonAnterior.addEventListener('click', anteriorPregunta);
+
+// agrego esto 21/05
+
+ totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores
 
 
 
@@ -263,15 +298,8 @@ respuesta2Btn.addEventListener('click', () => {
         }
     }
     });
-
-
-
-
-    
-   
-
-
-respuesta3Btn.addEventListener('click', () => {
+ 
+    respuesta3Btn.addEventListener('click', () => {
     resetearEstilosBotones();
     resetearBotonesActivos();
     respuesta3Btn.classList.add('active');
@@ -332,7 +360,7 @@ const preguntaActual = preguntasArray[indicePreguntaActual];
 
 });
      
-    // Aquí podrías también agregar la lógica para verificar la respuesta
+    
 
 
 const mostrarPreguntaBoteonesDesactivados = (indice) => {
@@ -361,11 +389,27 @@ const resetearBotonesActivos = () => {
 
 
 
-    totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores
+   
 
   
-
+//no se si esto vale 
 const guardarRespuestaSeleccionada = (respuesta) => {
     respuestasUsuario[indicePreguntaActual] = respuesta;
     console.log("Respuestas del usuario:", respuestasUsuario); // Para depuración
 };
+
+/*async function resetearJuego() {
+  try {
+    await reiniciarJuego()
+    puntuacion = 0
+    indicePreguntaActual= 0
+    } catch (error) {
+    console.error(error)
+  }
+}*/
+
+/* // Función para decodificar entidades HTML (ej: &amp; a &)
+const decodeHtml = (html) => {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = html;
+    return textarea.value;*/
