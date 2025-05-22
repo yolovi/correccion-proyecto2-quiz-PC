@@ -23,6 +23,7 @@ const vista3 = document.getElementById("vista3")
 const botonVolverInicio = document.getElementById("btn-volver-inicio");
 const totalAcertadas = document.getElementById("total-acertadas");
 const botonRestart = document.getElementById("btn-restart");
+const contadorPreguntas = document.getElementById('contadorPreguntas');
 
 const mostrarJuego = () => {
     vista1.classList.add("d-none")
@@ -115,6 +116,7 @@ const mostrarPregunta = (indice) => {
        // Deshabilita los botones al cargar la pregunta
     resetearEstilosBotones();
      resetearBotonesActivos();
+      actualizarContadorPreguntas();
     if (indice >= 0 && indice < preguntasArray.length) {
         const preguntaActual = preguntasArray[indice];
         preguntaTitulo.textContent = preguntaActual.question;
@@ -390,4 +392,17 @@ const guardarRespuestaSeleccionada = (respuesta) => {
     respuestasUsuario[indicePreguntaActual] = respuesta;
     console.log("Respuestas del usuario:", respuestasUsuario); // Para depuración
 };
+
+function actualizarContadorPreguntas() {
+    // Si indicePreguntaActual es 0, para el usuario es la pregunta 1.
+    // Si preguntasArray.length es 0 (antes de cargar), evita divisiones por cero.
+    if (preguntasArray && preguntasArray.length > 0) {
+        const numeroPreguntaActual = indicePreguntaActual + 1;
+        const totalPreguntas = preguntasArray.length;
+        contadorPreguntas.textContent = `${numeroPreguntaActual} / ${totalPreguntas}`;
+    } else {
+        // En caso de que no haya preguntas cargadas aún o al inicio
+        contadorPreguntas.textContent = 'Cargando preguntas...'; // O un mensaje vacío
+    }
+}
 
