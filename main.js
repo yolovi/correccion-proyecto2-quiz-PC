@@ -30,8 +30,7 @@ const mostrarJuego = () => {
     vista3.classList.add("d-none") 
     botonGo.classList.add("btn-btn-primary")
     botonHome.classList.remove("btn-btn-danger")
-    
-     indicePreguntaActual = 0
+    indicePreguntaActual = 0
     
 }
     
@@ -74,7 +73,6 @@ const mostrarHome = () => {
 
 
 botonGo.addEventListener("click", mostrarJuego);
-
 botonHome.addEventListener("click", mostrarHome);
 botonResultado.addEventListener("click", mostrarResultados);
 botonVolverInicio.addEventListener("click", resetearJuego);
@@ -166,6 +164,8 @@ botonRestart.addEventListener('click', () => {
     botonRestart.classList.add('d-none'); // Añade la clase 'd-none' de Bootstrap para ocultar el botón
     botonSiguiente.disabled = false;
     botonSiguiente.classList.remove('d-none'); // Muestra el botón "Siguiente"
+    respuestasCorrectasUsuario = [];
+     totalAcertadas.textContent = `¡Acertaste 0 de ${preguntasArray.length} preguntas!`;
 });
 
 
@@ -222,13 +222,6 @@ const anteriorPregunta = () => {
 
 // Event listener para el botón "Siguiente"
 botonSiguiente.addEventListener('click', siguientePregunta);
-//botonSiguiente.forEach(button => {
-    //button.disabled = true; // Habilita el botón "Siguiente" al inicio
-    
-//});  // Selecciona el botón "Siguiente"
-
-// Event listener para el botón "Anterior" (asegúrate de tenerlo)
-
 botonAnterior.addEventListener('click', anteriorPregunta);
 
 // agrego esto 21/05
@@ -392,24 +385,9 @@ const resetearBotonesActivos = () => {
    
 
   
-//no se si esto vale 
+
 const guardarRespuestaSeleccionada = (respuesta) => {
     respuestasUsuario[indicePreguntaActual] = respuesta;
     console.log("Respuestas del usuario:", respuestasUsuario); // Para depuración
 };
 
-/*async function resetearJuego() {
-  try {
-    await reiniciarJuego()
-    puntuacion = 0
-    indicePreguntaActual= 0
-    } catch (error) {
-    console.error(error)
-  }
-}*/
-
-/* // Función para decodificar entidades HTML (ej: &amp; a &)
-const decodeHtml = (html) => {
-    const textarea = document.createElement('textarea');
-    textarea.innerHTML = html;
-    return textarea.value;*/
