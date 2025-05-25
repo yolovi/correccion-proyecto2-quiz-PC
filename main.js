@@ -1,9 +1,8 @@
-// DOM
+// //  Variables Globales y DOM 
+// // Arrays para almacenar datos del quiz
  let respuestasUsuario = [];
  let respuestasCorrectasUsuario = [];
  let preguntasArray = [];
- 
- 
 const API_URL = "https://opentdb.com/api.php?amount=10&category=27&type=multiple";
 const botonGo = document.getElementById("buttom-go");
 const botonHome = document.getElementById("button-home");
@@ -14,9 +13,9 @@ const respuesta1Btn = document.getElementById("respuesta1");
 const respuesta2Btn = document.getElementById("respuesta2");
 const respuesta3Btn = document.getElementById("respuesta3");
 const respuesta4Btn = document.getElementById("respuesta4");
-const startButton = document.getElementById("buttom-start"); // ¡Nuevo botón START!
-const botonAnterior = document.getElementById("btn-anterior"); // Selecciona el botón "Anterior"
-const botonSiguiente = document.getElementById("btn-siguiente"); // Selecciona el botón "Siguiente"
+const startButton = document.getElementById("buttom-start"); 
+const botonAnterior = document.getElementById("btn-anterior"); 
+const botonSiguiente = document.getElementById("btn-siguiente"); 
 const preguntaTitulo = document.getElementById("preguntas");
 const botonResultado = document.getElementById("btn-resultados"); 
 const vista3 = document.getElementById("vista3")
@@ -24,8 +23,11 @@ const botonVolverInicio = document.getElementById("btn-volver-inicio");
 const totalAcertadas = document.getElementById("total-acertadas");
 const botonRestart = document.getElementById("btn-restart");
 const contadorPreguntas = document.getElementById('contadorPreguntas');
+const botonesRespuesta = [respuesta1Btn, respuesta2Btn, respuesta3Btn, respuesta4Btn];
 
-const mostrarJuego = () => {
+
+//vista 1
+    const mostrarJuego = () => {
     vista1.classList.add("d-none")
     vista2.classList.remove("d-none")
     vista3.classList.add("d-none") 
@@ -34,7 +36,7 @@ const mostrarJuego = () => {
     indicePreguntaActual = 0
     
 }
-    
+    //Resetea el juego a un estado inicial, similar a mostrarJuego
      const resetearJuego = () => {
      vista1.classList.add("d-none")
     vista2.classList.remove("d-none")
@@ -46,12 +48,12 @@ const mostrarJuego = () => {
      botonAnterior.classList.add('d-none');
     botonSiguiente.classList.add('d-none');
     botonResultado.classList.add('d-none');
-    //botonSiguiente.disabled = false;
+    
 
      }
        
 
-
+// vista 2
 const mostrarHome = () => {
     vista1.classList.remove("d-none")
     vista2.classList.add("d-none")
@@ -61,6 +63,7 @@ const mostrarHome = () => {
     botonResultado.classList.add("btn-btn-success")
     
   }
+// vista 3
     const mostrarResultados = () => {
     vista1.classList.add("d-none")
     vista2.classList.add("d-none")
@@ -72,7 +75,7 @@ const mostrarHome = () => {
     
     }
 
-
+// botones para mostrar vistas
 botonGo.addEventListener("click", mostrarJuego);
 botonHome.addEventListener("click", mostrarHome);
 botonResultado.addEventListener("click", mostrarResultados);
@@ -80,12 +83,15 @@ botonVolverInicio.addEventListener("click", resetearJuego);
 
 
 
+
    
 
- // Variable para almacenar el array de preguntas
+ // Variable para el estado de carga de preguntas,para evitar múltiples llamadas a la API
 
 let estaCargandoPreguntas = false
 
+// Obtener Preguntas de la API y se estan cargando que desaparezca el boton start, 
+// y las guarda en un array
 const getQuestions = async () => {
     if (estaCargandoPreguntas) {
         return;
@@ -94,14 +100,16 @@ const getQuestions = async () => {
     startButton.disabled = true;
 
     try {
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 1500)); //para que le de tiempo coger las preguntas de la api 
 
-        const res = await axios.get(API_URL);
+        //Realiza la solicitud a la API y espera mediante axios a que tengamos los datos
+       const res = await axios.get(API_URL); 
+
+        // Guarda las preguntas (que están en res.data.results) en nuestro array y que nos las muestre
         preguntasArray = res.data.results;
         console.log("Array de preguntas recibido:", preguntasArray);
         mostrarPregunta(indicePreguntaActual);
-         botonAnterior.disabled = true; // Deshabilita "Anterior" al inicio // Muestra el botón "Anterior"
-+        botonSiguiente.classList.remove('d-none'); // Muestra el botón "Siguiente"
+         
      
     } catch (error) {
         console.error("Error al obtener las preguntas:", error);
@@ -112,72 +120,73 @@ const getQuestions = async () => {
 };
 
 const mostrarPregunta = (indice) => {
-      resetearEstadoBotones(); 
-       // Deshabilita los botones al cargar la pregunta
+    resetearEstadoBotones(); 
     resetearEstilosBotones();
-     resetearBotonesActivos();
-      actualizarContadorPreguntas();
-    if (indice >= 0 && indice < preguntasArray.length) {
-        const preguntaActual = preguntasArray[indice];
-        preguntaTitulo.textContent = preguntaActual.question;
+    resetearBotonesActivos();
+    actualizarContadorPreguntas();
+     botonAnterior.disabled = true; 
++    botonSiguiente.classList.remove('d-none');
 
+
+
+     if (indice >= 0 && indice < preguntasArray.length) {
+        // muestra  la pregunta segun el indice y que muestre a fututo el texto de 
+// la pregunta actual
+        const preguntaActual = preguntasArray[indice];
+         preguntaTitulo.textContent = preguntaActual.question;
+     // guardamos en una variable la pregunta correcta y las incorrectas
         const correcta = preguntaActual.correct_answer;
         const incorrectas = preguntaActual.incorrect_answers;
+     // que me muestre las preguntas y respuestas de manera aleatoria
         const todasLasRespuestas = [correcta, ...incorrectas].sort(() => Math.random() - 0.5);
 
-        respuesta1Btn.textContent = todasLasRespuestas[0] || '';
-        respuesta2Btn.textContent = todasLasRespuestas[1] || '';
-        respuesta3Btn.textContent = todasLasRespuestas[2] || '';
-        respuesta4Btn.textContent = todasLasRespuestas[3] || '';
 
-        respuesta1Btn.dataset.correcta = (respuesta1Btn.textContent === correcta);
-        respuesta2Btn.dataset.correcta = (respuesta2Btn.textContent === correcta);
-        respuesta3Btn.dataset.correcta = (respuesta3Btn.textContent === correcta);
-        respuesta4Btn.dataset.correcta = (respuesta4Btn.textContent === correcta);
-   
-        
-    } else {
-        preguntaTitulo.textContent = "¡Quiz terminado!";
-        respuesta1Btn.textContent = "";
-        respuesta2Btn.textContent = "";
-        respuesta3Btn.textContent = "";
-        respuesta4Btn.textContent = "";
-        respuesta1Btn.disabled = true;
-        respuesta2Btn.disabled = true;
-        respuesta3Btn.disabled = true;
-        respuesta4Btn.disabled = true;
-    }
+       //coge todas las respuestas en una sola constante 
+const botonesRespuesta = [respuesta1Btn, respuesta2Btn, respuesta3Btn, respuesta4Btn];
+
+//indica si la respuesta seleccionada es correcta o no
+// y asigna el texto a cada botón de respuesta
+botonesRespuesta.forEach((btn, i) => {
+    btn.textContent = todasLasRespuestas[i] || '';
+    btn.dataset.correcta = (btn.textContent === correcta).toString(); // Importante: .toString() para guardar "true" o "false" como string
+});
+     } else { // que si el indice es mayor que el array de preguntas, se finalice el juego 
+    botonesRespuesta.forEach(btn => {
+    btn.textContent = "";  // Vacía el texto del botón
+    btn.disabled = true;   // Deshabilita el botón
+});
+       }
 };
 
-indicePreguntaActual = 0;
-    preguntaTitulo.textContent = "Preguntas";
- 
+
+ // que al apretar boton start, se inicie el juego
 startButton.addEventListener('click', () => {
     indicePreguntaActual = 0;
     preguntaTitulo.textContent = "Preguntas";
     getQuestions();
-    startButton.classList.add('d-none'); // Añade la clase 'd-none' de Bootstrap para ocultar el botón
+    startButton.classList.add('d-none'); 
     
 });
+// Botón "Reiniciar" para reiniciar el juego
 botonRestart.addEventListener('click', () => {
     indicePreguntaActual = 0;
     preguntaTitulo.textContent = "Preguntas";
     getQuestions();
-    botonRestart.classList.add('d-none'); // Añade la clase 'd-none' de Bootstrap para ocultar el botón
+    botonRestart.classList.add('d-none'); 
     botonSiguiente.disabled = false;
-    botonSiguiente.classList.remove('d-none'); // Muestra el botón "Siguiente"
+    botonSiguiente.classList.remove('d-none'); 
     respuestasCorrectasUsuario = [];
      totalAcertadas.textContent = `¡Acertaste 0 de ${preguntasArray.length} preguntas!`;
 });
 
-
+// (el indice mas 1) se muestre la siguiente pregunta
 const siguientePregunta = () => {
    
     indicePreguntaActual++;
     console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
-    resetearEstilosBotones();
- 
+   
+ // deshabilitar boton anterior si estamos en la primera pregunta
 if (indicePreguntaActual > 0) {
         botonAnterior.disabled = false;
         botonAnterior.classList.remove('d-none');
@@ -189,220 +198,93 @@ if (indicePreguntaActual > 0) {
         botonResultado.classList.remove('d-none'); // Muestra el botón "Resultados"
     }
 };
-
+//  quita el estilo de los botones resetados
 const resetearEstilosBotones = () => {
-    respuesta1Btn.classList.remove('btn-success', 'btn-danger');
-    respuesta2Btn.classList.remove('btn-success', 'btn-danger');
-    respuesta3Btn.classList.remove('btn-success', 'btn-danger');
-    respuesta4Btn.classList.remove('btn-success', 'btn-danger');
-    respuesta1Btn.style.boxShadow = 'none';
-    respuesta2Btn.style.boxShadow = 'none';
-    respuesta3Btn.style.boxShadow = 'none';
-    respuesta4Btn.style.boxShadow = 'none';
-    respuesta1Btn.style.backgroundColor = ''; // <--- AGREGADO
-    respuesta2Btn.style.backgroundColor = ''; // <--- AGREGADO
-    respuesta3Btn.style.backgroundColor = ''; // <--- AGREGADO
-    respuesta4Btn.style.backgroundColor = '';
 
+     botonesRespuesta.forEach(btn => {
+        btn.classList.remove('btn-success', 'btn-danger'); 
+        btn.style.backgroundColor = '';                   
+        btn.style.boxShadow = 'none';                     
+    });
 };
+    
+// indice menos 1 para que al apretar el boton anterior, se muestre la pregunta anterior
 const anteriorPregunta = () => {
     indicePreguntaActual--;
     console.log("Índice de pregunta actual:", indicePreguntaActual);
     mostrarPregunta(indicePreguntaActual);
-    // quito de prueba resetearEstilosBotones();
-
-    // Deshabilitar "Anterior" si estamos en la primera pregunta
-    if (indicePreguntaActual === 0) {
-        botonAnterior.disabled = true;
-    }
-
-    // Habilitar "Siguiente" si no estamos en la última pregunta
-    if (indicePreguntaActual < preguntasArray.length - 1) {
-        botonSiguiente.disabled = false;
-    }
-};
+    };
 
 // Event listener para el botón "Siguiente"
 botonSiguiente.addEventListener('click', siguientePregunta);
 botonAnterior.addEventListener('click', anteriorPregunta);
-
-// agrego esto 21/05
-
- totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores
+totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores
 
 
-
-
-
-respuesta1Btn.addEventListener('click', () => {
-    resetearEstilosBotones();
-    resetearBotonesActivos();
-    respuesta1Btn.classList.add('active');
-    const preguntaActual = preguntasArray[indicePreguntaActual];
+//1. Resetear estilos y deshabilitar todos los botones 
+// 2. Aplicar el color correcto o incorrecto
+    const aplicarEstilosRespuesta = (botonSeleccionado, correcta) => {
+    botonesRespuesta.forEach(btn => {
         
-        const correcta = preguntaActual.correct_answer;
+        btn.classList.remove('active'); 
+        btn.style.backgroundColor = ''; 
+        btn.disabled = true;           
 
-guardarRespuestaSeleccionada(respuesta1Btn.textContent);
-resetearEstilosBotones();
-    if(respuesta1Btn.dataset.correcta === "true") {
-        respuestasCorrectasUsuario.push(respuesta1Btn.textContent);
-        // pintar boton! verde
-        respuesta1Btn.style.backgroundColor = 'lightgreen';
-        console.log("Respuesta correcta:", respuesta1Btn.textContent);
-    }else{
-
-        if(respuesta2Btn.textContent === correcta){
-            respuesta2Btn.style.backgroundColor = 'lightgreen';
-            //pintar boton 2 verde
-        }else if(respuesta3Btn.textContent === correcta){
-            //pintar boton 3verde
-            respuesta3Btn.style.backgroundColor = 'lightgreen';
-        }else if(respuesta4Btn.textContent === correcta){
-            //pintar boton 4 verde
-            respuesta4Btn.style.backgroundColor = 'lightgreen';
-        }
-    }
- 
-});
-
-respuesta2Btn.addEventListener('click', () => {
-    resetearEstilosBotones();
-    resetearBotonesActivos();
-    respuesta2Btn.classList.add('active');
-
-    const preguntaActual = preguntasArray[indicePreguntaActual];
         
-        const correcta = preguntaActual.correct_answer;
-
-    guardarRespuestaSeleccionada(respuesta2Btn.textContent);
-    resetearEstilosBotones();
-        if(respuesta2Btn.dataset.correcta === "true") {
-        respuestasCorrectasUsuario.push(respuesta2Btn.textContent);
-        console.log("Respuesta correcta:", respuesta2Btn.textContent);
-    }else{
-
-        if(respuesta1Btn.textContent === correcta){
-            respuesta1Btn.style.backgroundColor = 'lightgreen';
-            //pintar boton 2 verde
-        }else if(respuesta3Btn.textContent === correcta){
-            //pintar boton 3verde
-            respuesta3Btn.style.backgroundColor = 'lightgreen';
-        }else if(respuesta4Btn.textContent === correcta){
-            //pintar boton 4 verde
-            respuesta4Btn.style.backgroundColor = 'lightgreen';
+        if (btn.textContent === correcta) {
+            btn.style.backgroundColor = 'lightgreen';
+        } else if (btn === botonSeleccionado) {
+            btn.style.backgroundColor = 'salmon'; // Respuesta incorrecta seleccionada
         }
-    }
+        
+    // Marca el botón seleccionado como activo
+    botonSeleccionado.classList.add('active');
+     });
+
+    
+};
+
+// Event Listener para todos los botones de respuesta
+    botonesRespuesta.forEach(button => {
+    button.addEventListener('click', function() {
+        const preguntaActual = preguntasArray[indicePreguntaActual];
+        const correcta = preguntaActual.correct_answer; // Obtiene la respuesta correcta de la pregunta actual
+
+        guardarRespuestaSeleccionada(this.textContent); // Guarda el texto del botón clickeado
+
+// Si la respuesta seleccionada es correcta, agrégala al array de correctas
+        if (this.dataset.correcta === "true") {
+            respuestasCorrectasUsuario.push(this.textContent);
+            console.log("Respuesta correcta:", this.textContent);
+        }
+
+        // Aplica los estilos de pintado (verde para la correcta, rojo para la incorrecta seleccionada)
+        aplicarEstilosRespuesta(this, correcta); // Pasa el botón clickeado y la respuesta correcta
     });
- 
-    respuesta3Btn.addEventListener('click', () => {
-    resetearEstilosBotones();
-    resetearBotonesActivos();
-    respuesta3Btn.classList.add('active');
-    const preguntaActual = preguntasArray[indicePreguntaActual];
-        
-        const correcta = preguntaActual.correct_answer;
-
-guardarRespuestaSeleccionada(respuesta3Btn.textContent);
-resetearEstilosBotones();
-    if(respuesta3Btn.dataset.correcta === "true") {
-        respuestasCorrectasUsuario.push(respuesta3Btn.textContent);
-        console.log("Respuesta correcta:", respuesta3Btn.textContent);
-    }else{
-
-        if(respuesta2Btn.textContent === correcta){
-            respuesta2Btn.style.backgroundColor = 'lightgreen';
-            //pintar boton 2 verde
-        }else if(respuesta1Btn.textContent === correcta){
-            //pintar boton 3verde
-            respuesta1Btn.style.backgroundColor = 'lightgreen';
-        }else if(respuesta4Btn.textContent === correcta){
-            //pintar boton 4 verde
-            respuesta4Btn.style.backgroundColor = 'lightgreen';
-        }
-    }
 });
-    
-   
- 
-
-
-respuesta4Btn.addEventListener('click', () => {
-    resetearEstilosBotones();
-    resetearBotonesActivos();
-    respuesta4Btn.classList.add('active');
-const preguntaActual = preguntasArray[indicePreguntaActual];
-        
-        const correcta = preguntaActual.correct_answer;
-
-    if(respuesta4Btn.dataset.correcta === "true") {
-        respuestasCorrectasUsuario.push(respuesta4Btn.textContent);
-        console.log("Respuesta correcta:", respuesta4Btn.textContent);
-    }else{
-
-        if(respuesta2Btn.textContent === correcta){
-            respuesta2Btn.style.backgroundColor = 'lightgreen';
-            //pintar boton 2 verde
-        }else if(respuesta3Btn.textContent === correcta){
-            //pintar boton 3verde
-            respuesta3Btn.style.backgroundColor = 'lightgreen';
-        }else if(respuesta1Btn.textContent === correcta){
-            //pintar boton 4 verde
-            respuesta1Btn.style.backgroundColor = 'lightgreen';
-        }
-    }
-    //resetearEstilosBotones();
-//guardarRespuestaSeleccionada(respuesta4SBtn.textContent);
-
-});
-     
-    
-
-
-const mostrarPreguntaBoteonesDesactivados = (indice) => {
-    resetearBotones(); // Esta línea remueve la clase 'active'
-    if (indice >= 0 && indice < preguntasArray.length) {
-        
- }
-   
+//resetearEstadoBotones
+ const resetearEstadoBotones = () => {
+    resetearEstilosBotones(); 
+    botonesRespuesta.forEach(btn => {
+        btn.disabled = false; // Asegura que estén habilitados
+    });
 };
 
-
-const resetearEstadoBotones = () => {
-    resetearEstilosBotones(); // Remueve la clase 'active' y otros estilos visuales
-    respuesta1Btn.disabled = false; // Habilita el botón
-    respuesta2Btn.disabled = false; // Habilita el botón
-    respuesta3Btn.disabled = false; // Habilita el botón
-    respuesta4Btn.disabled = false; // Habilita el botón
-};
-
+// resetearBotonesActivos
 const resetearBotonesActivos = () => {
-    respuesta1Btn.classList.remove('active');
-    respuesta2Btn.classList.remove('active');
-    respuesta3Btn.classList.remove('active');
-    respuesta4Btn.classList.remove('active');
+    botonesRespuesta.forEach(btn => {
+        btn.classList.remove('active'); // Simplemente quita la clase 'active'
+    });
 };
-
-
-
-   
-
-  
-
+// Guardamos la respuesta seleccionada en el array de respuestas del usuario
 const guardarRespuestaSeleccionada = (respuesta) => {
     respuestasUsuario[indicePreguntaActual] = respuesta;
     console.log("Respuestas del usuario:", respuestasUsuario); // Para depuración
 };
-
+//PAGINACION
 function actualizarContadorPreguntas() {
-    // Si indicePreguntaActual es 0, para el usuario es la pregunta 1.
-    // Si preguntasArray.length es 0 (antes de cargar), evita divisiones por cero.
-    if (preguntasArray && preguntasArray.length > 0) {
-        const numeroPreguntaActual = indicePreguntaActual + 1;
-        const totalPreguntas = preguntasArray.length;
-        contadorPreguntas.textContent = `${numeroPreguntaActual} / ${totalPreguntas}`;
-    } else {
-        // En caso de que no haya preguntas cargadas aún o al inicio
-        contadorPreguntas.textContent = 'Cargando preguntas...'; // O un mensaje vacío
-    }
+    // Si hay preguntas cargadas, muestra el contador actual; de lo contrario, "Cargando preguntas..."
+    contadorPreguntas.textContent = (preguntasArray && preguntasArray.length > 0) ?
+        `${indicePreguntaActual + 1} / ${preguntasArray.length}` :
+        'Cargando preguntas...';
 }
-
