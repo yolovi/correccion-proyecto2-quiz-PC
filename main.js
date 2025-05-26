@@ -81,12 +81,7 @@ botonHome.addEventListener("click", mostrarHome);
 botonResultado.addEventListener("click", mostrarResultados);
 botonVolverInicio.addEventListener("click", resetearJuego);
 
-
-
-
-   
-
- // Variable para el estado de carga de preguntas,para evitar múltiples llamadas a la API
+// Variable para el estado de carga de preguntas,para evitar múltiples llamadas a la API
 
 let estaCargandoPreguntas = false
 
@@ -198,6 +193,7 @@ if (indicePreguntaActual > 0) {
         botonResultado.classList.remove('d-none'); // Muestra el botón "Resultados"
     }
 };
+//RESETEO BOTONES ESTILO Y ESTADO Y LOS DEJA DE NUEVO ACTIVADOS
 //  quita el estilo de los botones resetados
 const resetearEstilosBotones = () => {
 
@@ -205,6 +201,19 @@ const resetearEstilosBotones = () => {
         btn.classList.remove('btn-success', 'btn-danger'); 
         btn.style.backgroundColor = '';                   
         btn.style.boxShadow = 'none';                     
+    });
+};
+// resetearBotonesActivos
+const resetearBotonesActivos = () => {
+    botonesRespuesta.forEach(btn => {
+        btn.classList.remove('active'); // Simplemente quita la clase 'active'
+    });
+};
+//resetearEstadoBotones
+ const resetearEstadoBotones = () => {
+    resetearEstilosBotones(); 
+    botonesRespuesta.forEach(btn => {
+        btn.disabled = false; // Asegura que estén habilitados
     });
 };
     
@@ -219,7 +228,6 @@ const anteriorPregunta = () => {
 botonSiguiente.addEventListener('click', siguientePregunta);
 botonAnterior.addEventListener('click', anteriorPregunta);
 totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores
-
 
 //1. Resetear estilos y deshabilitar todos los botones 
 // 2. Aplicar el color correcto o incorrecto
@@ -244,7 +252,8 @@ totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.i
     
 };
 
-// Event Listener para todos los botones de respuesta
+// que al apretar los botones de respuesta nos guarde la respuesta y la almacene 
+// si es correcta en el array de correcta y si no en el de respuesta 
     botonesRespuesta.forEach(button => {
     button.addEventListener('click', function() {
         const preguntaActual = preguntasArray[indicePreguntaActual];
@@ -252,7 +261,7 @@ totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.i
 
         guardarRespuestaSeleccionada(this.textContent); // Guarda el texto del botón clickeado
 
-// Si la respuesta seleccionada es correcta, agrégala al array de correctas
+// guarda la respuesta correcta en el array de correctas
         if (this.dataset.correcta === "true") {
             respuestasCorrectasUsuario.push(this.textContent);
             console.log("Respuesta correcta:", this.textContent);
@@ -262,20 +271,9 @@ totalAcertadas.innerHTML = ''; // Limpiar resultados anteriores totalAcertadas.i
         aplicarEstilosRespuesta(this, correcta); // Pasa el botón clickeado y la respuesta correcta
     });
 });
-//resetearEstadoBotones
- const resetearEstadoBotones = () => {
-    resetearEstilosBotones(); 
-    botonesRespuesta.forEach(btn => {
-        btn.disabled = false; // Asegura que estén habilitados
-    });
-};
 
-// resetearBotonesActivos
-const resetearBotonesActivos = () => {
-    botonesRespuesta.forEach(btn => {
-        btn.classList.remove('active'); // Simplemente quita la clase 'active'
-    });
-};
+
+
 // Guardamos la respuesta seleccionada en el array de respuestas del usuario
 const guardarRespuestaSeleccionada = (respuesta) => {
     respuestasUsuario[indicePreguntaActual] = respuesta;
