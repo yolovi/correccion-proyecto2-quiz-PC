@@ -1,12 +1,24 @@
+/**
+ * CORRECCION:
+ *  El orden correcto es: elementos del DOM > variables > eventos > funciones
+ */
 // //  Variables Globales y DOM 
 // // Arrays para almacenar datos del quiz
  let respuestasUsuario = [];
  let respuestasCorrectasUsuario = [];
  let preguntasArray = [];
+ /**
+ * CORRECCION:
+ *  Las api_url no se almacenan enteras, se almacena la base y el resto se construye segun el endpoint que necesites:
+ *  API_URL_BASE = "https://opentdb.com/api.php?"
+ *  const cantidad = 10; const cateoria = 27; const tipo = "multiple";
+ *  const apiUrl = `${API_URL_BASE}amount=${cantidad}&category={categoria}&type=${tipo}`;
+ */
 const API_URL = "https://opentdb.com/api.php?amount=10&category=27&type=multiple";
 const botonGo = document.getElementById("buttom-go");
 const botonHome = document.getElementById("button-home");
 const vista1 = document.getElementById("vista1");
+
 const vista2 = document.getElementById("vista2");
 const preguntas = document.getElementById("preguntas");
 const respuesta1Btn = document.getElementById("respuesta1");
@@ -18,6 +30,7 @@ const botonAnterior = document.getElementById("btn-anterior");
 const botonSiguiente = document.getElementById("btn-siguiente"); 
 const preguntaTitulo = document.getElementById("preguntas");
 const botonResultado = document.getElementById("btn-resultados"); 
+
 const vista3 = document.getElementById("vista3")
 const botonVolverInicio = document.getElementById("btn-volver-inicio");
 const totalAcertadas = document.getElementById("total-acertadas");
@@ -25,7 +38,11 @@ const botonRestart = document.getElementById("btn-restart");
 const contadorPreguntas = document.getElementById('contadorPreguntas');
 const botonesRespuesta = [respuesta1Btn, respuesta2Btn, respuesta3Btn, respuesta4Btn];
 
-
+/**
+ * CORRECCION:
+ *  codigo mal indentado. No puedes empezar cada linea donde quieras, hay una serie de buenas prácticas que se deben
+ *  seguir para asegurarnos de que nuestro código es fácilmente legible.
+ */
 //vista 1
     const mostrarJuego = () => {
     vista1.classList.add("d-none")
@@ -74,7 +91,10 @@ const mostrarHome = () => {
     totalAcertadas.textContent = `¡Acertaste ${respuestasCorrectasUsuario.length} de ${preguntasArray.length} preguntas!`;
     
     }
-
+/**
+ * CORRECCION:
+ * no asignamos un eventlistener a cada boton. Utilizamos la delegación de eventos: Se lo asignamos a un elemento principal y después en el evneto comprobamos qué elemento lo ha disparado.
+ */
 // botones para mostrar vistas
 botonGo.addEventListener("click", mostrarJuego);
 botonHome.addEventListener("click", mostrarHome);
@@ -95,6 +115,11 @@ const getQuestions = async () => {
     startButton.disabled = true;
 
     try {
+        /**
+         * CORRECCION:
+         * No entiendo por qué haces esto, la llamada a la API ya tiene su await, esto solo mete en pausa tu codigo y desde la perspectiva del usuario es bastante incómodo. De hecho si la llamada a la API tardase ese 1.5 segundos que le supones, lo único que  haces aquí es esperar 1'5 segundos más.
+         * Tampoco entiendo el por qué de la variable estaCargandoPreguntas. Voy a suponer que no quieres que haga varias llamadas a la api (es lo unico a lo que le veo minimamante sentido de por que lo podrias haber puesto), eso lo puedes controlar en el evento bloqueando el botón nada más ser pulsado por ejemplo.
+         */
         await new Promise(resolve => setTimeout(resolve, 1500)); //para que le de tiempo coger las preguntas de la api 
 
         //Realiza la solicitud a la API y espera mediante axios a que tengamos los datos
@@ -121,9 +146,9 @@ const mostrarPregunta = (indice) => {
     actualizarContadorPreguntas();
      botonAnterior.disabled = true; 
 +    botonSiguiente.classList.remove('d-none');
+/**CORRECCION: Que es este + de la linea anterior??? */
 
-
-
+        
      if (indice >= 0 && indice < preguntasArray.length) {
         // muestra  la pregunta segun el indice y que muestre a fututo el texto de 
 // la pregunta actual
@@ -143,8 +168,16 @@ const botonesRespuesta = [respuesta1Btn, respuesta2Btn, respuesta3Btn, respuesta
 // y asigna el texto a cada botón de respuesta
 botonesRespuesta.forEach((btn, i) => {
     btn.textContent = todasLasRespuestas[i] || '';
+    /**
+     * CORRECCION: No entiendo por que lo conviertes a string, si lo entiendo bien quieres almacenar si 
+     * la respuesta es correcta o no, con un booleano te vale.
+     */
     btn.dataset.correcta = (btn.textContent === correcta).toString(); // Importante: .toString() para guardar "true" o "false" como string
 });
+/**
+         * CORRECCION:
+         * No sigo leyendo, con esta indentación no puedo seguir el código. 
+         */
      } else { // que si el indice es mayor que el array de preguntas, se finalice el juego 
     botonesRespuesta.forEach(btn => {
     btn.textContent = "";  // Vacía el texto del botón
@@ -217,6 +250,10 @@ const resetearBotonesActivos = () => {
     });
 };
     
+/**
+ * CORRECCION:
+ * los console.log están muy bien para desarrollar, pero en las entregas hay que eliminarlos (a no ser que sean necesarios)
+ */
 // indice menos 1 para que al apretar el boton anterior, se muestre la pregunta anterior
 const anteriorPregunta = () => {
     indicePreguntaActual--;

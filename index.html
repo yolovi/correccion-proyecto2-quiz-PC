@@ -9,7 +9,10 @@
 </head>
 <body>
     <!--vista 1-->
-    
+    <!-- CORRECCION:
+      Codigo mal indentado. 
+      no damos estilos con el atributo style, se da en los archivos css. 
+    -->
 <section id="vista1" class="container m-3 d">
     <h1 class="mb-4 text-center">Bienvenido a QUIZ</h1>
     <div class="card mx-auto" style="width: 50rem;">
@@ -24,7 +27,12 @@
 </div>
 </section>
 <!--vista 2-->
-
+<!-- CORRECCION:
+    Los siguientes dos section que generas están ocultos. Eso quiere decir que estás consumiendo tiempo y recursos
+    para contenido que no se va a visualizar hasta un determinado momento. Además es contenido que no necesitamos
+    tener preparado con anteación.
+    Lo correcto sería tener un solo contenedor principal y cambiar lo que muestra creándolo dinámicamente cuando sea necesario.
+-->
 <section id="vista2" class="container m-3 mx-auto d-none" >
 <div class="card border-dark mb-3 mx-auto" style="max-width: 200rem;">
   <div class="card-header bg-secondary"><div class="d-grid gap-1 col-2 mx-auto">
